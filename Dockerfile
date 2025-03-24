@@ -2,7 +2,7 @@ FROM php:8.4-apache
 
 LABEL maintainer="Alexey Mikhaltsov <lexxvlad@gmail.com>"
 
-# Установка нужных пакетов
+# Install packages
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
@@ -55,7 +55,7 @@ RUN pecl install grpc && docker-php-ext-enable grpc
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN install-php-extensions protobuf
 
-# Установка Composer (оставляем)
+# Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && \
     chmod +x /usr/local/bin/composer
 
@@ -65,15 +65,15 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     npm install -g npm && \
     npm install puppeteer
 
-# Apache модули
+# Apache modules
 RUN a2enmod rewrite actions
 
-# Очистка
+# Clear
 RUN docker-php-source delete && \
     apt-get remove -y g++ gnupg curl unzip && \
     apt-get autoremove --purge -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# PHP настройки (если есть)
+# PHP settings
 ADD php.ini /usr/local/etc/php/conf.d/php.ini
