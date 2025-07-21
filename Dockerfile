@@ -75,3 +75,7 @@ RUN docker-php-source delete && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 ADD php.ini /usr/local/etc/php/conf.d/php.ini
+
+# Копируем нужные JS-файлы внутрь образа
+COPY js/parser.js /app/parser.js
+COPY js/captcha_metadata.json /app/captcha_metadata.json
